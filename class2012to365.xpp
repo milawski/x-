@@ -1,1 +1,47 @@
 //export ax class to one file to comapre with 365
+static void clasAx2D365(Args _args)
+{
+    ClassName classNa = 'AVK_CRMSalesQuotationRetainedEx_v2';
+    TreeNode root = TreeNode::findNode(@'\Classes\'+ classNa);
+    TreeNodeTraverser traverser = new TreeNodeTraverser(root);
+    TreeNode node;
+    str xppCode;
+    FileName fielName = @"c:\temp\" + classNa + ".txt";
+    container classExport;
+    FileIOPermission permission;
+     #File
+    TextIo commaTextIo;
+    List listSource=new List(Types::String);
+    SysInfologEnumerator    sysInfologEnumerator;
+    SysInfologMessageStruct infoMessageStruct;
+    int i;
+    System.Environment env;
+    str newLine;
+
+    permission = new FileIOPermission(fielName,#io_write);
+    permission.assert();
+
+    commaTextIo = new TextIo(fielName,#io_write);
+    commaTextIo.inFieldDelimiter(";");
+
+    while (traverser.next())
+    {
+        node = traverser.currentNode();
+
+        xppCode = "";
+
+        xppCode = node.AOTgetSource();
+        if(xppCode)
+        {
+            xppCode += "\n";
+            xppCode += "\n";
+            classExport += xppCode;// + "\n" ;
+            //info(strFmt("%1 %2",  xppCode));
+        }
+
+
+    }
+    commaTextIo.write(classExport);
+
+
+}
